@@ -16,11 +16,16 @@ public class ReportGeneratorImpl implements ReportGenerator {
         report.append("fruit,quantity\n");
 
         for (Map.Entry<String, Integer> entry : storage.getAll().entrySet()) {
+            if (entry.getKey() == null || entry.getKey().equals("")) {
+                throw new NullPointerException("Null or empty keys are not allowed");
+            }
+
             report.append(entry.getKey())
                     .append(",")
                     .append(entry.getValue())
                     .append("\n");
         }
+
         return report.toString();
     }
 }

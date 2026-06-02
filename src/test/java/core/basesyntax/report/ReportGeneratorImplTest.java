@@ -13,9 +13,7 @@ class ReportGeneratorImplTest {
     void getReport_emptyStorage_Ok() {
         Storage storage = new StorageImpl();
         ReportGenerator reportGenerator = new ReportGeneratorImpl(storage);
-
         String report = reportGenerator.getReport();
-
         assertEquals("fruit,quantity\n", report);
     }
 
@@ -28,9 +26,7 @@ class ReportGeneratorImplTest {
         }
 
         ReportGenerator reportGenerator = new ReportGeneratorImpl(storage);
-
         String report = reportGenerator.getReport();
-
         assertEquals("fruit,quantity\nbanana,100\napple,200\n", report);
     }
 }

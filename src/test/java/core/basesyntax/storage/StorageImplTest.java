@@ -1,17 +1,12 @@
 package core.basesyntax.storage;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 class StorageImplTest {
-    @Test
-    void storageExist_ok() {
-        Storage expected = new StorageImpl();
-        Storage actual = new StorageImpl();
-        assertEquals(expected, actual);
-    }
 
     @Test
     void validLinesInStorage_ok() {
@@ -24,10 +19,27 @@ class StorageImplTest {
     }
 
     @Test
-    void removeWhenCurrentQuantityLeesThanQuantity_notOk() {
+    void removeWhenCurrentQuantityLessThanQuantity_notOk() {
         Storage actual = new StorageImpl();
         actual.put("banana", 0);
-        assertThrows(RuntimeException.class, () -> actual.remove("banana", 10));
+        assertThrows(IllegalArgumentException.class, () ->
+                actual.remove("banana", 10));
+    }
+
+    @Test
+    void removeWhenFruitNotExist_notOk() {
+        Storage actual = new StorageImpl();
+        assertThrows(IllegalArgumentException.class, () ->
+                actual.remove("banana", 100));
+    }
+
+    @Test
+    void removeExactQuantityRemoveKey_ok() {
+        Storage storage = new StorageImpl();
+        storage.put("banana", 100);
+        storage.remove("banana", 100);
+        assertEquals(0, storage.getQuantity("banana"));
+        assertFalse(storage.getAll().containsKey("banana"));
     }
 
     @Test
@@ -41,23 +53,31 @@ class StorageImplTest {
     }
 
     @Test
-    void showQuantity_ok() {
+    void getQuantity_whenFruitsNotExist_ok() {
         Storage actual = new StorageImpl();
-        actual.put("banana", 100);
-
-        Storage expected = new StorageImpl();
-        expected.put("banana", 100);
-        assertEquals(expected.getQuantity("banana"), actual.getQuantity("banana"));
+        int result = actual.getQuantity("banana");
+        assertEquals(0, result);
     }
 
     @Test
-    void addQuantity_ok() {
+    void put_OverrideExistingValue_ok() {
         Storage actual = new StorageImpl();
         actual.put("banana", 100);
-        actual.add("banana", 100);
+        actual.put("banana", 50);
+        assertEquals(50, actual.getQuantity("banana"));
+    }
 
-        Storage expected = new StorageImpl();
-        expected.put("banana", 200);
-        assertEquals(expected.getQuantity("banana"), actual.getQuantity("banana"));
+    @Test
+    void addingNotExistingFruit_Ok() {
+        Storage actual = new StorageImpl();
+        actual.add("banana", 100);
+        assertEquals(100, actual.getQuantity("banana"));
+    }
+
+    @Test
+    void put_nullFruit_notOk() {
+        Storage storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class, () ->
+                storage.put(null, 100));
     }
 }

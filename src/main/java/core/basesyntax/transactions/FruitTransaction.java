@@ -19,6 +19,14 @@ public class FruitTransaction {
     }
 
     public FruitTransaction setFruit(String fruit) {
+        if (fruit == null) {
+            throw new NullPointerException("Fruit cannot be null");
+        }
+
+        if (fruit.length() < 1) {
+            throw new IllegalArgumentException("Fruit cannot be empty");
+        }
+
         this.fruit = fruit;
         return this;
     }
@@ -28,6 +36,10 @@ public class FruitTransaction {
     }
 
     public FruitTransaction setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
+        }
+
         this.quantity = quantity;
         return this;
     }
@@ -49,4 +61,3 @@ public class FruitTransaction {
         }
     }
 }
-

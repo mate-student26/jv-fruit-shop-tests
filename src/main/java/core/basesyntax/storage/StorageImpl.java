@@ -23,6 +23,10 @@ public class StorageImpl implements Storage {
 
     @Override
     public void put(String fruit, int quantity) {
+        if (fruit == null) {
+            throw new IllegalArgumentException("Fruit cannot be null");
+        }
+
         transactions.put(fruit, quantity);
     }
 
@@ -34,12 +38,20 @@ public class StorageImpl implements Storage {
 
     @Override
     public void remove(String fruit, int quantity) {
-        int current = transactions.getOrDefault(fruit, 0);
+        if (!transactions.containsKey(fruit)) {
+            throw new IllegalArgumentException(fruit + " doesn't exist");
+        }
 
-        if (current >= quantity) {
-            transactions.put(fruit, current - quantity);
+        int current = transactions.get(fruit);
+
+        if (current < quantity) {
+            throw new IllegalArgumentException("Not enough quantity for: " + fruit);
+        }
+
+        if (current == quantity) {
+            transactions.remove(fruit);
         } else {
-            throw new RuntimeException("Current value is lower than quantity");
+            transactions.put(fruit, current - quantity);
         }
     }
 

@@ -14,7 +14,7 @@ public class DataConverterImpl implements DataConverter {
             String line = inputReport.get(i);
             String[] parts = line.split(",");
             if (parts.length < 3) {
-                throw new RuntimeException("Invalid line format: " + line);
+                throw new IllegalArgumentException("Invalid line format: " + line);
             }
 
             String operationCode = parts[0];
@@ -33,7 +33,7 @@ public class DataConverterImpl implements DataConverter {
             }
 
             if (operation == null) {
-                throw new RuntimeException("Invalid operation code: " + operationCode);
+                throw new IllegalArgumentException("Invalid operation code: " + operationCode);
             }
 
             fruitTransaction.setOperation(operation);

@@ -2,7 +2,6 @@ package core.basesyntax.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import core.basesyntax.transactions.FruitTransaction;
 import java.util.List;
@@ -12,45 +11,46 @@ class DataConverterImplTest {
     private final DataConverterImpl dataConverter = new DataConverterImpl();
 
     @Test
-    void validInputData_Ok() {
+    void convertToTransaction_validInput_ok() {
         List<String> inputReport = List.of(
                 "fruit,quantity",
                 "b,banana,100",
                 "s,apple,50"
         );
 
-        List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputReport);
-        assertEquals(transactions.size(), 2);
+        List<FruitTransaction> transactions = dataConverter
+                .convertToTransaction(inputReport);
+        assertEquals(2, transactions.size());
     }
 
     @Test
-    void convertToTransaction_invalidLineFormat_throwsException() {
+    void convertToTransaction_nullInput_notOk() {
+        List<String> inputReport = null;
+        assertThrows(NullPointerException.class, () -> dataConverter
+                .convertToTransaction(inputReport));
+    }
+
+    @Test
+    void convertToTransaction_invalidLineFormat_notOk() {
         List<String> inputReport = List.of(
                 "fruit,quantity",
                 "b,banana"
         );
 
-        assertThrows(RuntimeException.class, () ->
-                dataConverter.convertToTransaction(inputReport)
+        assertThrows(IllegalArgumentException.class, () -> dataConverter
+                .convertToTransaction(inputReport)
         );
     }
 
     @Test
-    void convertToTransaction_invalidOperationCode_throwsException() {
+    void convertToTransaction_invalidOperationCode_notOk() {
         List<String> inputReport = List.of(
                 "fruit,quantity",
                 "x,banana,100"
         );
 
-        assertThrows(RuntimeException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 dataConverter.convertToTransaction(inputReport)
         );
-    }
-
-    @Test
-    void emptyList_NotOk() {
-        List<String> inputReport = List.of();
-        List<FruitTransaction> transactions = dataConverter.convertToTransaction(inputReport);
-        assertTrue(transactions.isEmpty());
     }
 }
