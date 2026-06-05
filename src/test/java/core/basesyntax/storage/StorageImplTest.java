@@ -1,6 +1,5 @@
 package core.basesyntax.storage;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -19,7 +18,7 @@ class StorageImplTest {
     }
 
     @Test
-    void removeWhenCurrentQuantityLessThanQuantity_notOk() {
+    void remove_WhenCurrentQuantityLessThanQuantity_notOk() {
         Storage actual = new StorageImpl();
         actual.put("banana", 0);
         assertThrows(IllegalArgumentException.class, () ->
@@ -27,19 +26,18 @@ class StorageImplTest {
     }
 
     @Test
-    void removeWhenFruitNotExist_notOk() {
+    void remove_WhenFruitNotExist_notOk() {
         Storage actual = new StorageImpl();
         assertThrows(IllegalArgumentException.class, () ->
                 actual.remove("banana", 100));
     }
 
     @Test
-    void removeExactQuantityRemoveKey_ok() {
+    void remove_ExactQuantityRemoveKey_ok() {
         Storage storage = new StorageImpl();
         storage.put("banana", 100);
         storage.remove("banana", 100);
         assertEquals(0, storage.getQuantity("banana"));
-        assertFalse(storage.getAll().containsKey("banana"));
     }
 
     @Test
@@ -53,10 +51,10 @@ class StorageImplTest {
     }
 
     @Test
-    void getQuantity_whenFruitsNotExist_ok() {
+    void getQuantity_whenFruitsNotExist_notOk() {
         Storage actual = new StorageImpl();
-        int result = actual.getQuantity("banana");
-        assertEquals(0, result);
+        assertThrows(IllegalArgumentException.class,
+                () -> actual.getQuantity("banana"));
     }
 
     @Test
@@ -68,16 +66,16 @@ class StorageImplTest {
     }
 
     @Test
-    void addingNotExistingFruit_Ok() {
-        Storage actual = new StorageImpl();
-        actual.add("banana", 100);
-        assertEquals(100, actual.getQuantity("banana"));
-    }
-
-    @Test
     void put_nullFruit_notOk() {
         Storage storage = new StorageImpl();
         assertThrows(IllegalArgumentException.class, () ->
                 storage.put(null, 100));
+    }
+
+    @Test
+    void addingNotExistingFruit_Ok() {
+        Storage actual = new StorageImpl();
+        actual.add("banana", 100);
+        assertEquals(100, actual.getQuantity("banana"));
     }
 }

@@ -1,26 +1,60 @@
 package core.basesyntax.operation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import core.basesyntax.storage.Storage;
 import core.basesyntax.storage.StorageImpl;
 import core.basesyntax.transactions.FruitTransaction;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class BalanceOperationTest {
+    private FruitTransaction fruitTransaction;
+    private BalanceOperation balanceOperation;
+    private Storage storage;
 
     @Test
-    void noEmptyFruitsLine_Ok() {
-        Map<String, Integer> expected = new HashMap<>();
-        expected.put("banana", 100);
-        Storage storage = new StorageImpl();
-        BalanceOperation balanceOperation = new BalanceOperation();
-        FruitTransaction transaction = new FruitTransaction();
-        transaction.setFruit("banana");
-        transaction.setQuantity(100);
-        balanceOperation.operate(transaction, storage);
-        assertEquals(expected, storage.getAll());
+    void operate_nullFruitTransaction_notOk() {
+        fruitTransaction = null;
+        balanceOperation = new BalanceOperation();
+        storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class,
+                () -> balanceOperation.operate(fruitTransaction, storage));
+    }
+
+    @Test
+    void operate_nullStorage_notOk() {
+        fruitTransaction = new FruitTransaction();
+        balanceOperation = new BalanceOperation();
+        assertThrows(IllegalArgumentException.class,
+                () -> balanceOperation.operate(fruitTransaction, null));
+    }
+
+    @Test
+    void operate_negativeQuantity_notOk() {
+        fruitTransaction = new FruitTransaction();
+        balanceOperation = new BalanceOperation();
+        storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class,
+                () -> balanceOperation.operate(fruitTransaction.setQuantity(-1), storage));
+    }
+
+    @Test
+    void operate_existingFruit_replaceQuantity_ok() {
+        storage = new StorageImpl();
+        balanceOperation = new BalanceOperation();
+
+        FruitTransaction actual = new FruitTransaction();
+        actual.setFruit("banana");
+        actual.setQuantity(10);
+
+        FruitTransaction expected = new FruitTransaction();
+        expected.setFruit("banana");
+        expected.setQuantity(20);
+
+        balanceOperation.operate(actual, storage);
+        balanceOperation.operate(expected, storage);
+
+        assertEquals(20, storage.getQuantity("banana"));
     }
 }

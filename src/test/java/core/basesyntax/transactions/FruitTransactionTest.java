@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class FruitTransactionTest {
     @Test
-    void negativeQuantity_notOk() {
+    void setQuantity_negativeQuantity_notOk() {
         FruitTransaction fruitTransaction = new FruitTransaction();
         assertThrows(IllegalArgumentException.class, () ->
                 fruitTransaction.setQuantity(-100));

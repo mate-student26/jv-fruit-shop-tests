@@ -24,9 +24,19 @@ class DataConverterImplTest {
     }
 
     @Test
+    void convertToTransaction_emptyInput_notOk() {
+        List<String> inputReport = List.of(
+                "fruit, quantity",
+                ""
+        );
+        assertThrows(IllegalArgumentException.class, () -> dataConverter
+                .convertToTransaction(inputReport));
+    }
+
+    @Test
     void convertToTransaction_nullInput_notOk() {
         List<String> inputReport = null;
-        assertThrows(NullPointerException.class, () -> dataConverter
+        assertThrows(IllegalArgumentException.class, () -> dataConverter
                 .convertToTransaction(inputReport));
     }
 

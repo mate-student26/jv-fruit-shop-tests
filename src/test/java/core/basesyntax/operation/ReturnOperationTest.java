@@ -1,26 +1,53 @@
 package core.basesyntax.operation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import core.basesyntax.storage.Storage;
 import core.basesyntax.storage.StorageImpl;
 import core.basesyntax.transactions.FruitTransaction;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ReturnOperationTest {
+    private FruitTransaction fruitTransaction;
+    private ReturnOperation returnOperation;
+    private Storage storage;
+
     @Test
-    void addingPossitiveQuantityToStorage_Ok() {
-        Map<String, Integer> expected = new HashMap<>();
-        expected.put("banana", 110);
-        Storage storage = new StorageImpl();
-        storage.put("banana", 100);
-        ReturnOperation operation = new ReturnOperation();
+    void operate_nullFruitTransaction_notOk() {
+        fruitTransaction = null;
+        returnOperation = new ReturnOperation();
+        storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class,
+                () -> returnOperation.operate(fruitTransaction, storage));
+    }
+
+    @Test
+    void operate_nullStorage_notOk() {
+        fruitTransaction = new FruitTransaction();
+        returnOperation = new ReturnOperation();
+        assertThrows(IllegalArgumentException.class,
+                () -> returnOperation.operate(fruitTransaction, null));
+    }
+
+    @Test
+    void operate_negativeQuantity_notOk() {
+        fruitTransaction = new FruitTransaction();
+        returnOperation = new ReturnOperation();
+        storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class,
+                () -> returnOperation.operate(fruitTransaction.setQuantity(-1), storage));
+    }
+
+    @Test
+    void operate_increaseFruitQuantityAfterReturn_ok() {
+        storage = new StorageImpl();
+        storage.put("banana", 10);
+        returnOperation = new ReturnOperation();
         FruitTransaction transaction = new FruitTransaction();
         transaction.setFruit("banana");
-        transaction.setQuantity(10);
-        operation.operate(transaction, storage);
-        assertEquals(expected, storage.getAll());
+        transaction.setQuantity(20);
+        returnOperation.operate(transaction, storage);
+        assertEquals(30, storage.getQuantity("banana"));
     }
 }

@@ -1,32 +1,26 @@
 package core.basesyntax.report;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import core.basesyntax.storage.Storage;
 import core.basesyntax.storage.StorageImpl;
-import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ReportGeneratorImplTest {
+    private Storage storage = new StorageImpl();
 
     @Test
-    void getReport_emptyStorage_Ok() {
-        Storage storage = new StorageImpl();
+    void getReport_nullStorage_notOk() {
+        storage = null;
         ReportGenerator reportGenerator = new ReportGeneratorImpl(storage);
-        String report = reportGenerator.getReport();
-        assertEquals("fruit,quantity\n", report);
+        assertThrows(IllegalArgumentException.class,
+                () -> reportGenerator.getReport());
     }
 
     @Test
-    void getReport_correctInputData_Ok() {
-        Storage storage = new StorageImpl();
-        Map<String, Integer> fruits = Map.of("banana", 100, "apple", 200);
-        for (var entry : fruits.entrySet()) {
-            storage.add(entry.getKey(), entry.getValue());
-        }
-
+    void getReport_emptyStorage_notOk() {
         ReportGenerator reportGenerator = new ReportGeneratorImpl(storage);
-        String report = reportGenerator.getReport();
-        assertEquals("fruit,quantity\nbanana,100\napple,200\n", report);
+        assertThrows(IllegalArgumentException.class,
+                () -> reportGenerator.getReport());
     }
 }

@@ -10,6 +10,10 @@ public class DataConverterImpl implements DataConverter {
     public List<FruitTransaction> convertToTransaction(List<String> inputReport) {
         List<FruitTransaction> transactions = new ArrayList<>();
 
+        if (inputReport == null || inputReport.isEmpty()) {
+            throw new IllegalArgumentException("Input report cannot be null or empty");
+        }
+
         for (int i = 1; i < inputReport.size(); i++) {
             String line = inputReport.get(i);
             String[] parts = line.split(",");

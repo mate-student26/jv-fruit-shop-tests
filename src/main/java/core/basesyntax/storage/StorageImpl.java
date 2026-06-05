@@ -1,6 +1,6 @@
 package core.basesyntax.storage;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -8,16 +8,19 @@ public class StorageImpl implements Storage {
     private Map<String, Integer> transactions;
 
     public StorageImpl() {
-        this.transactions = new HashMap<>();
+        this.transactions = new LinkedHashMap<>();
     }
 
     @Override
     public Map<String, Integer> getAll() {
-        return new HashMap<>(this.transactions);
+        return new LinkedHashMap<>(this.transactions);
     }
 
     @Override
     public Integer getQuantity(String fruit) {
+        if (!transactions.containsKey(fruit)) {
+            throw new IllegalArgumentException("No " + fruit + " in storage");
+        }
         return transactions.getOrDefault(fruit, 0);
     }
 
@@ -48,11 +51,7 @@ public class StorageImpl implements Storage {
             throw new IllegalArgumentException("Not enough quantity for: " + fruit);
         }
 
-        if (current == quantity) {
-            transactions.remove(fruit);
-        } else {
-            transactions.put(fruit, current - quantity);
-        }
+        transactions.put(fruit, current - quantity);
     }
 
     @Override

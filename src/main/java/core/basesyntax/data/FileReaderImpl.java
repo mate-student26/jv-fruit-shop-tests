@@ -10,10 +10,14 @@ public class FileReaderImpl implements FileReader {
     @Override
     public List<String> read(String path) {
 
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("Path is null or empty");
+        }
+
         try {
             return Files.readAllLines(Paths.get(path));
         } catch (IOException e) {
-            throw new RuntimeException("Can't read file " + path, e);
+            throw new IllegalArgumentException("Can't read file " + path, e);
         }
     }
 }
