@@ -10,7 +10,7 @@ public class FruitTransaction {
     }
 
     public FruitTransaction setOperation(Operation operation) {
-        if (operation.equals(null)) {
+        if (operation == null) {
             throw new IllegalArgumentException("Operation can't be null!");
         }
 
@@ -23,16 +23,16 @@ public class FruitTransaction {
     }
 
     public FruitTransaction setFruit(String fruit) {
-        if (fruit.contains(" ")) {
-            throw new IllegalArgumentException("Fruit contains spaces!");
-        }
-
-        if (fruit.equals(null)) {
+        if (fruit == null) {
             throw new IllegalArgumentException("Fruit can't be null!");
         }
 
         if (fruit.isEmpty()) {
             throw new IllegalArgumentException("Fruit can't be empty!");
+        }
+
+        if (fruit.contains(" ")) {
+            throw new IllegalArgumentException("Fruit contains spaces!");
         }
 
         this.fruit = fruit;

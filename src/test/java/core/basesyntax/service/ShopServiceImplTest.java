@@ -18,7 +18,7 @@ import org.mockito.Mockito;
 
 class ShopServiceImplTest {
     @Test
-    void multipleTransactions_Ok() {
+    void process_validTransactions_ok() {
         OperationStrategy operationStrategy = Mockito.mock(OperationStrategy.class);
         Storage storage = Mockito.mock(Storage.class);
 
@@ -36,7 +36,7 @@ class ShopServiceImplTest {
     }
 
     @Test
-    void emptyTransactionList_Ok() {
+    void process_emptyTransactionList_ok() {
         Storage expectedStorage = new StorageImpl();
         Storage storage = new StorageImpl();
         Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
@@ -48,16 +48,16 @@ class ShopServiceImplTest {
     }
 
     @Test
-    void nullTranscationList_notOk() {
+    void process_nullTranscationList_notOk() {
         OperationStrategy operationStrategy = Mockito.mock(OperationStrategy.class);
         Storage storage = Mockito.mock(Storage.class);
         ShopService shopService = new ShopServiceImpl(operationStrategy, storage);
-        assertThrows(NullPointerException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 shopService.process(null));
     }
 
     @Test
-    void missingHandler_notOk() {
+    void process_missingHandler_notOk() {
         Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
         OperationStrategy operationStrategy = new OperationStrategyImpl(handlers);
         Storage storage = Mockito.mock(Storage.class);

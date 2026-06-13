@@ -15,7 +15,7 @@ class FruitTransactionTest {
     @Test
     void setFruit_nullFruit_notOk() {
         FruitTransaction fruitTransaction = new FruitTransaction();
-        assertThrows(NullPointerException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 fruitTransaction.setFruit(null));
     }
 

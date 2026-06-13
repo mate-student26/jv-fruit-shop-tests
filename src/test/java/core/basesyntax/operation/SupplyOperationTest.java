@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class SupplyOperationTest {
     private FruitTransaction fruitTransaction;
-    private ReturnOperation returnOperation;
     private Storage storage;
 
     @Test

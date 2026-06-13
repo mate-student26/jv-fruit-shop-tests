@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class StorageImplTest {
 
     @Test
-    void validLinesInStorage_ok() {
+    void put_validFruit_ok() {
         Storage expected = new StorageImpl();
         expected.put("banana", 100);
 
@@ -41,7 +41,7 @@ class StorageImplTest {
     }
 
     @Test
-    void showAllInput_ok() {
+    void getAll_validStorage_ok() {
         Storage actual = new StorageImpl();
         actual.put("banana", 100);
 
@@ -73,7 +73,7 @@ class StorageImplTest {
     }
 
     @Test
-    void addingNotExistingFruit_Ok() {
+    void add_newFruit_ok() {
         Storage actual = new StorageImpl();
         actual.add("banana", 100);
         assertEquals(100, actual.getQuantity("banana"));

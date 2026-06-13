@@ -24,7 +24,7 @@ class DataConverterImplTest {
     }
 
     @Test
-    void convertToTransaction_emptyInput_notOk() {
+    void convertToTransaction_emptyLine_notOk() {
         List<String> inputReport = List.of(
                 "fruit, quantity",
                 ""

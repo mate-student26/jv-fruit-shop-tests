@@ -24,19 +24,6 @@ public class ReportGeneratorImpl implements ReportGenerator {
         StringBuilder report = new StringBuilder();
         report.append("fruit,quantity\n");
 
-        /*for (Map.Entry<String, Integer> entry : storage.getAll().entrySet()) {
-            if (entry.getKey() == null || entry.getKey().equals("")) {
-                throw new IllegalArgumentException("Null or empty keys are not allowed");
-            }
-
-            report.append(entry.getKey())
-                    .append(",")
-                    .append(entry.getValue())
-                    .append("\n");
-        }
-
-        return report.toString();*/
-
         String fruitAndQuantity = storage.getAll().entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
                 .map(e -> e.getKey() + "," + e.getValue())

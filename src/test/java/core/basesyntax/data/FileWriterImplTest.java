@@ -1,7 +1,13 @@
 package core.basesyntax.data;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import core.basesyntax.report.ReportGenerator;
+import core.basesyntax.report.ReportGeneratorImpl;
+import core.basesyntax.storage.Storage;
+import core.basesyntax.storage.StorageImpl;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 class FileWriterImplTest {
@@ -46,5 +52,20 @@ class FileWriterImplTest {
         assertThrows(IllegalArgumentException.class, () ->
                 fileWriterImpl.write(data, path)
         );
+    }
+
+    @Test
+    void write_validDataOutput_ok() {
+        Storage storage = new StorageImpl();
+        storage.put("banana", 100);
+        ReportGenerator report = new ReportGeneratorImpl(storage);
+        String path = "src/main/resources/finalReport.csv";
+        FileWriter writer = new FileWriterImpl();
+        writer.write(report.getReport(), path);
+        FileReader readFromFinalReport = new FileReaderImpl();
+        ArrayList<String> expectedData = new ArrayList<>();
+        expectedData.add("fruit,quantity");
+        expectedData.add("banana,100");
+        assertEquals(expectedData, readFromFinalReport.read(path));
     }
 }
