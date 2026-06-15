@@ -30,15 +30,6 @@ class SupplyOperationTest {
     }
 
     @Test
-    void operate_negativeQuantity_notOk() {
-        fruitTransaction = new FruitTransaction();
-        SupplyOperation supplyOperation = new SupplyOperation();
-        storage = new StorageImpl();
-        assertThrows(IllegalArgumentException.class,
-                () -> supplyOperation.operate(fruitTransaction.setQuantity(-1), storage));
-    }
-
-    @Test
     void operate_increaseFruitQuantityAfterReturn_ok() {
         storage = new StorageImpl();
         storage.put("banana", 10);

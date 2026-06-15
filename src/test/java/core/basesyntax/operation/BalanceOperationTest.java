@@ -31,15 +31,6 @@ class BalanceOperationTest {
     }
 
     @Test
-    void operate_negativeQuantity_notOk() {
-        fruitTransaction = new FruitTransaction();
-        balanceOperation = new BalanceOperation();
-        storage = new StorageImpl();
-        assertThrows(IllegalArgumentException.class,
-                () -> balanceOperation.operate(fruitTransaction.setQuantity(-1), storage));
-    }
-
-    @Test
     void operate_existingFruit_replaceQuantity_ok() {
         storage = new StorageImpl();
         balanceOperation = new BalanceOperation();

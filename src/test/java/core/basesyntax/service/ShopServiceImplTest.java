@@ -1,15 +1,12 @@
 package core.basesyntax.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import core.basesyntax.operation.OperationHandler;
 import core.basesyntax.storage.Storage;
-import core.basesyntax.storage.StorageImpl;
 import core.basesyntax.strategy.OperationStrategy;
 import core.basesyntax.strategy.OperationStrategyImpl;
 import core.basesyntax.transactions.FruitTransaction;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,15 +33,12 @@ class ShopServiceImplTest {
     }
 
     @Test
-    void process_emptyTransactionList_ok() {
-        Storage expectedStorage = new StorageImpl();
-        Storage storage = new StorageImpl();
-        Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
-        OperationStrategy operationStrategy = new OperationStrategyImpl(handlers);
-        List<FruitTransaction> transactions = new ArrayList<>();
-        ShopService shopService = new ShopServiceImpl(operationStrategy, storage);
-        shopService.process(transactions);
-        assertEquals(expectedStorage, storage);
+    void process_emptyTransactionList_doesNotCallStrategy() {
+        OperationStrategy strategy = Mockito.mock(OperationStrategy.class);
+        Storage storage = Mockito.mock(Storage.class);
+        ShopService service = new ShopServiceImpl(strategy, storage);
+        service.process(List.of());
+        Mockito.verifyNoInteractions(strategy);
     }
 
     @Test

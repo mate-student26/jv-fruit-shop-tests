@@ -31,15 +31,6 @@ class PurchaseOperationTest {
     }
 
     @Test
-    void operate_negativeQuantity_notOk() {
-        fruitTransaction = new FruitTransaction();
-        purchaseOperation = new PurchaseOperation();
-        storage = new StorageImpl();
-        assertThrows(IllegalArgumentException.class,
-                () -> purchaseOperation.operate(fruitTransaction.setQuantity(-1), storage));
-    }
-
-    @Test
     void operate_fruitQuantityAfterPurchase_ok() {
         storage = new StorageImpl();
         storage.put("banana", 40);

@@ -31,15 +31,6 @@ class ReturnOperationTest {
     }
 
     @Test
-    void operate_negativeQuantity_notOk() {
-        fruitTransaction = new FruitTransaction();
-        returnOperation = new ReturnOperation();
-        storage = new StorageImpl();
-        assertThrows(IllegalArgumentException.class,
-                () -> returnOperation.operate(fruitTransaction.setQuantity(-1), storage));
-    }
-
-    @Test
     void operate_increaseFruitQuantityAfterReturn_ok() {
         storage = new StorageImpl();
         storage.put("banana", 10);

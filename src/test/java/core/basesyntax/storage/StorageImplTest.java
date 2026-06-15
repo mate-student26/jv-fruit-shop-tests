@@ -18,7 +18,7 @@ class StorageImplTest {
     }
 
     @Test
-    void remove_WhenCurrentQuantityLessThanQuantity_notOk() {
+    void remove_insufficientQuantity_notOk() {
         Storage actual = new StorageImpl();
         actual.put("banana", 0);
         assertThrows(IllegalArgumentException.class, () ->
@@ -26,14 +26,14 @@ class StorageImplTest {
     }
 
     @Test
-    void remove_WhenFruitNotExist_notOk() {
+    void remove_missingFruit_notOk() {
         Storage actual = new StorageImpl();
         assertThrows(IllegalArgumentException.class, () ->
                 actual.remove("banana", 100));
     }
 
     @Test
-    void remove_ExactQuantityRemoveKey_ok() {
+    void remove_exactQuantity_setsQuantityToZero() {
         Storage storage = new StorageImpl();
         storage.put("banana", 100);
         storage.remove("banana", 100);
@@ -58,7 +58,7 @@ class StorageImplTest {
     }
 
     @Test
-    void put_OverrideExistingValue_ok() {
+    void put_existingFruit_replacesQuantity_ok() {
         Storage actual = new StorageImpl();
         actual.put("banana", 100);
         actual.put("banana", 50);
