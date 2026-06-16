@@ -17,13 +17,18 @@ public class ShopServiceImpl implements ShopService {
     @Override
     public void process(List<FruitTransaction> transactions) {
         if (transactions == null) {
-            throw new IllegalArgumentException("Transaction can't be null");
+            throw new IllegalArgumentException("Transactions can't be null");
         }
 
         for (FruitTransaction transaction : transactions) {
-            if (transaction.getFruit() == null) {
-                throw new IllegalArgumentException("Fruit is null");
+            if (transaction == null) {
+                throw new IllegalArgumentException("Transaction can't be null");
             }
+
+            if (transaction.getFruit() == null) {
+                throw new IllegalArgumentException("Fruit can't be null");
+            }
+
             operationStrategy.process(transaction, storage);
         }
     }

@@ -35,6 +35,10 @@ public class StorageImpl implements Storage {
 
     @Override
     public void add(String fruit, int quantity) {
+        if (fruit == null) {
+            throw new IllegalArgumentException("Fruit cannot be null");
+        }
+
         int current = transactions.getOrDefault(fruit, 0);
         transactions.put(fruit, current + quantity);
     }

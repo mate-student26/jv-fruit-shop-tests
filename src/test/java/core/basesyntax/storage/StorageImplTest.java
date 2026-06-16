@@ -78,4 +78,11 @@ class StorageImplTest {
         actual.add("banana", 100);
         assertEquals(100, actual.getQuantity("banana"));
     }
+
+    @Test
+    void add_nullFruit_notOk() {
+        Storage storage = new StorageImpl();
+        assertThrows(IllegalArgumentException.class,
+                () -> storage.add(null, 100));
+    }
 }

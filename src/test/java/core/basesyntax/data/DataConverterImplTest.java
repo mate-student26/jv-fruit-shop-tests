@@ -73,4 +73,10 @@ class DataConverterImplTest {
                 dataConverter.convertToTransaction(inputReport)
         );
     }
+
+    @Test
+    void convertToTransaction_emptyInput_notOk() {
+        assertThrows(IllegalArgumentException.class,
+                () -> dataConverter.convertToTransaction(List.of()));
+    }
 }
